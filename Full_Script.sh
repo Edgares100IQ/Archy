@@ -9,6 +9,42 @@ sudo chmod 440 /etc/sudoers.d/99-pacman-nopasswd
 
 
 
+#------------------------------------------------# Instalación Yay #----------------------------------------------#
+if ! command -v yay &> /dev/null; then
+    cd /tmp && rm -rf yay-bin
+    git clone https://aur.archlinux.org/yay-bin.git
+    cd yay-bin && makepkg -si --noconfirm
+fi
+#-----------------------------------------------------------------------------------------------------------------#
+
+
+
+#----------------------------------------------# Elegir navegador #---------------------------------------------#
+while true; do
+  echo "¿Qué navegador quieres instalar?"
+  echo "1) Firefox"
+  echo "2) Chromium"
+  echo "3) Brave"
+  echo "4) Opera"
+  echo "5) Tor Browser"
+  echo "6) Zen Browser"
+  echo "7) Ninguno"
+  read -p "Elige una opción [1-7]: " navegador
+  case $navegador in
+    1) sudo pacman -S --needed firefox; break ;;
+    2) sudo pacman -S --needed chromium; break ;;
+    3) yay -S --noconfirm --needed --answerclean All --answerdiff None brave-bin; break ;;
+    4) yay -S --noconfirm --needed --answerclean All --answerdiff None opera; break ;;
+    5) yay -S --noconfirm --needed --answerclean All --answerdiff None tor-browser; break ;;
+    6) yay -S --noconfirm --needed --answerclean All --answerdiff None zen-browser-bin; break ;;
+    7) echo "sin navegador, ok"; break ;;
+    *) echo "opción no válida, inténtalo de nuevo" ;;
+  esac
+done
+#---------------------------------------------------------------------------------------------------------------#
+
+
+
 #-------------------------------------------# Actualización de Sistema #------------------------------------------#
 sudo pacman -Sy archlinux-keyring --noconfirm
 sudo pacman -Syu --noconfirm
@@ -18,16 +54,6 @@ sudo pacman -Syu --noconfirm
 
 #-------------------------------------------# Instalación de Paquetes #-------------------------------------------#
 sudo pacman -S --needed gcc cmake git curl perl wget base-devel rust go sassc flatpak libreoffice-fresh gimp discord blender noto-fonts ttf-dejavu ttf-liberation ttf-ubuntu-font-family ttf-fira-sans --noconfirm
-#-----------------------------------------------------------------------------------------------------------------#
-
-
-
-#------------------------------------------------# Instalación Yay #----------------------------------------------#
-if ! command -v yay &> /dev/null; then
-    cd /tmp && rm -rf yay-bin
-    git clone https://aur.archlinux.org/yay-bin.git
-    cd yay-bin && makepkg -si --noconfirm
-fi
 #-----------------------------------------------------------------------------------------------------------------#
 
 
@@ -58,7 +84,6 @@ rm -rf ~/.cache/yay/vscodium-bin
 
 
 #-------------------------------------------# Instalación de Software #-------------------------------------------#
-yay -S --noconfirm --needed --answerclean All --answerdiff None opera
 yay -S --noconfirm --needed --answerclean All --answerdiff None heroic-games-launcher-bin
 env -u MAKEPKGFLAGS yay -S --noconfirm --needed --answerclean All --answerdiff None vscodium-bin --mflags "--nocheck --skipinteg"
 flatpak install flathub com.valvesoftware.Steam -y
