@@ -31,8 +31,8 @@ while true; do
   echo "7) Ninguno"
   read -p "Elige una opción [1-7]: " navegador
   case $navegador in
-    1) sudo pacman -S --needed firefox; break ;;
-    2) sudo pacman -S --needed chromium; break ;;
+    1) sudo pacman -S --needed firefox --noconfirm; break ;;
+    2) sudo pacman -S --needed chromium --noconfirm; break ;;
     3) yay -S --noconfirm --needed --answerclean All --answerdiff None brave-bin; break ;;
     4) yay -S --noconfirm --needed --answerclean All --answerdiff None opera; break ;;
     5) yay -S --noconfirm --needed --answerclean All --answerdiff None tor-browser; break ;;
@@ -87,6 +87,8 @@ rm -rf ~/.cache/yay/vscodium-bin
 yay -S --noconfirm --needed --answerclean All --answerdiff None heroic-games-launcher-bin
 env -u MAKEPKGFLAGS yay -S --noconfirm --needed --answerclean All --answerdiff None vscodium-bin --mflags "--nocheck --skipinteg"
 flatpak install flathub com.valvesoftware.Steam -y
+yay -S --noconfirm --needed --answerclean All --answerdiff None upscayl-bin
+sudo pacman -S --needed nwg-displays --noconfirm
 #-----------------------------------------------------------------------------------------------------------------#
 
 
@@ -132,12 +134,6 @@ rm /home/edgar/.config/quickshell/ii/assets/images/default_wallpaper.png
 cd /home/edgar/.config/quickshell/ii/assets/images/
 curl -LO https://github.com/Edgares100IQ/archlinux-scripts/raw/main/default_wallpaper.png
 #---------------------------------------------------------------------------------------------------------------#
-
-
-
-#-------------------------------------------------# Upscayl #-----------------------------------------#
-yay -S --noconfirm --needed --answerclean All --answerdiff None upscayl-bin
-#-----------------------------------------------------------------------------------------------------#
 
 
 
