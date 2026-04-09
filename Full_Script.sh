@@ -137,6 +137,19 @@ curl -LO https://github.com/Edgares100IQ/archlinux-scripts/raw/main/default_wall
 
 
 
+#--------------------------------------------# Eliminar entorno DE anterior #-----------------------------------------#
+# Detectar y eliminar KDE Plasma u otros DE
+sudo pacman -Rns --noconfirm plasma plasma-desktop plasma-wayland-session kde-applications sddm 2>/dev/null || true
+sudo pacman -Rns --noconfirm gnome gnome-shell gnome-session 2>/dev/null || true
+sudo pacman -Rns --noconfirm xfce4 xfce4-goodies 2>/dev/null || true
+sudo pacman -Rns --noconfirm lxde lxqt 2>/dev/null || true
+
+# Limpiar huérfanos que queden
+sudo pacman -Rns --noconfirm $(pacman -Qdtq) 2>/dev/null || true
+#----------------------------------------------------------------------------------------------------------------------#
+
+
+
 #----------------------------------------------# Limpieza y Reinicio #--------------------------------------------#
 sudo rm -f /etc/sudoers.d/99-pacman-nopasswd
 
