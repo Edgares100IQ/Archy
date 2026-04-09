@@ -68,6 +68,69 @@ done
 
 
 
+#-----------------------------------------# Elegir editor de código #-----------------------------------------#
+# - Menu interactivo para elegir el editor que se instalara - #
+
+echo ">>> Seleccion de editor de código..."
+while true; do
+  echo "¿Qué editor quieres instalar?"
+  echo "1) VSCodium"
+  echo "2) Windsurf"
+  echo "3) Antigravity"
+  echo "4) Ninguno"
+  read -p "Elige una opción [1-4]: " editor
+  case $editor in
+    1) env -u MAKEPKGFLAGS yay -S --noconfirm --needed --answerclean All --answerdiff None vscodium-bin --mflags "--nocheck --skipinteg"; break ;;
+    2) yay -S --noconfirm --needed --answerclean All --answerdiff None windsurf
+       windsurf --no-sandbox
+       break ;;
+    3) yay -S --noconfirm --needed --answerclean All --answerdiff None antigravity; break ;;
+    4) echo "sin editor, ok"; break ;;
+    *) echo "opción no válida, inténtalo de nuevo" ;;
+  esac
+done
+
+#--------------------------------------------------------------------------------------------------------------#
+
+
+
+# --- Sección de Juegos --- #
+echo ">>> Seleccion de launcher de juegos...:"
+echo "1) Steam"
+echo "2) Heroic Games Launcher"
+echo "3) Ambos"
+echo "4) Ninguno"
+read -p "Opción: " games
+
+case $games in
+    1)
+        # Instalación de Steam desde repositorios oficiales
+        sudo pacman -S --needed steam 
+        ;;
+    2)
+        # Instalación de Heroic (Epic/GOG) desde el AUR
+        yay -S --noconfirm heroic-games-launcher-bin 
+        ;;
+    3)
+        # Instalación de ambos componentes
+        sudo pacman -S --needed steam
+        yay -S --noconfirm heroic-games-launcher-bin
+        ;;
+    4)
+        # Opción para no instalar nada
+        echo "No se instalarán launchers de juegos."
+        ;;
+    *)
+        # Manejo de entrada no válida
+        echo "Opción no válida, saltando sección de juegos..."
+        ;;
+esac
+
+#------------------------------------------------------#
+
+
+
+
 #-----------# Actualización de Sistema #------------#
 # - Actualiza el keyring y todos los paquetes del sistema - #
 
@@ -132,7 +195,6 @@ rm -rf ~/.cache/yay/vscodium-bin
 
 echo ">>> Instalando software..."
 yay -S --noconfirm --needed --answerclean All --answerdiff None heroic-games-launcher-bin
-env -u MAKEPKGFLAGS yay -S --noconfirm --needed --answerclean All --answerdiff None vscodium-bin --mflags "--nocheck --skipinteg"
 flatpak install flathub com.valvesoftware.Steam -y
 yay -S --noconfirm --needed --answerclean All --answerdiff None upscayl-bin
 sudo pacman -S --needed nwg-displays --noconfirm
