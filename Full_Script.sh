@@ -5,7 +5,7 @@ chmod +x Full_Script.sh
 # - Verifica que el script se esta ejecutando en Arch Linux - #
 
 if [ ! -f /etc/arch-release ]; then
-    echo "este script solo funciona en Arch Linux, abortando"
+    echo "este script solo funciona en Arch Linux"
     exit 1
 fi
 
