@@ -1,7 +1,7 @@
 #!/bin/bash
 chmod +x Full_Script.sh
 
-#------------------------------------------------# Comprobación de Sistema #------------------------------------------------#
+#--------------# Comprobación de Sistema #---------------#
 # - Verifica que el script se esta ejecutando en Arch Linux - #
 
 if [ ! -f /etc/arch-release ]; then
@@ -9,7 +9,7 @@ if [ ! -f /etc/arch-release ]; then
     exit 1
 fi
 
-#--------------------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------#
 
 
 
@@ -68,7 +68,7 @@ done
 
 
 
-#-----------------------------------------# Elegir editor de código #-----------------------------------------#
+#--------------------------------------------------------------# Elegir editor de código #---------------------------------------------------------------#
 # - Menu interactivo para elegir el editor que se instalara - #
 
 echo ">>> Seleccion de editor de código..."
@@ -90,44 +90,33 @@ while true; do
   esac
 done
 
-#--------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 
-# --- Sección de Juegos --- #
-echo ">>> Seleccion de launcher de juegos...:"
-echo "1) Steam"
-echo "2) Heroic Games Launcher"
-echo "3) Ambos"
-echo "4) Ninguno"
-read -p "Opción: " games
+#------------------------------------# Elegir launcher de juegos #-------------------------------------#
+# - Menu interactivo para elegir el launcher que se instalara - #
 
-case $games in
-    1)
-        # Instalación de Steam desde repositorios oficiales
-        sudo pacman -S --needed steam 
-        ;;
-    2)
-        # Instalación de Heroic (Epic/GOG) desde el AUR
-        yay -S --noconfirm heroic-games-launcher-bin 
-        ;;
-    3)
-        # Instalación de ambos componentes
-        sudo pacman -S --needed steam
-        yay -S --noconfirm heroic-games-launcher-bin
-        ;;
-    4)
-        # Opción para no instalar nada
-        echo "No se instalarán launchers de juegos."
-        ;;
-    *)
-        # Manejo de entrada no válida
-        echo "Opción no válida, saltando sección de juegos..."
-        ;;
-esac
+echo ">>> Seleccion de launcher de juegos..."
+while true; do
+  echo "¿Qué launcher quieres instalar?"
+  echo "1) Steam"
+  echo "2) Heroic Games Launcher"
+  echo "3) Ambos"
+  echo "4) Ninguno"
+  read -p "Elige una opción [1-4]: " launcher
+  case $launcher in
+    1) flatpak install flathub com.valvesoftware.Steam -y; break ;;
+    2) yay -S --noconfirm --needed --answerclean All --answerdiff None heroic-games-launcher-bin; break ;;
+    3) flatpak install flathub com.valvesoftware.Steam -y
+       yay -S --noconfirm --needed --answerclean All --answerdiff None heroic-games-launcher-bin
+       break ;;
+    4) echo "sin launcher, ok"; break ;;
+    *) echo "opción no válida, inténtalo de nuevo" ;;
+  esac
+done
 
-#------------------------------------------------------#
-
+#------------------------------------------------------------------------------------------------------#
 
 
 
@@ -163,7 +152,7 @@ yay -S --noconfirm --needed cava pavucontrol-qt wireplumber pipewire-pulse libdb
 
 
 
-#--------------------------------------------# Instalación de Entorno #--------------------------------------------#
+#-----------------------------------------# Instalación de Entorno #-----------------------------------------#
 # - Clona y ejecuta el setup de dots-hyprland - #
 
 echo ">>> Instalando entorno Hyprland..."
@@ -174,7 +163,7 @@ cd dots-hyprland
 chmod +x setup
 (printf '\n\n\n\nn\nyesforall\n'; sleep 5; while true; do echo "y"; sleep 2; done) | ./setup install || true
 
-#------------------------------------------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------------------------------------#
 
 
 
@@ -190,32 +179,33 @@ rm -rf ~/.cache/yay/vscodium-bin
 
 
 
-#------------------------------------------------------# Instalación de Software #------------------------------------------------------#
-# - Instala Heroic, VSCodium, Steam, Upscayl y gestor de pantallas - #
+#---------------------------# Instalación de Software #---------------------------#
+# - Instala Upscayl, gestor de pantallas y Wine - #
 
 echo ">>> Instalando software..."
-yay -S --noconfirm --needed --answerclean All --answerdiff None heroic-games-launcher-bin
-flatpak install flathub com.valvesoftware.Steam -y
 yay -S --noconfirm --needed --answerclean All --answerdiff None upscayl-bin
 sudo pacman -S --needed nwg-displays --noconfirm
 sudo pacman -S --needed wine --noconfirm
 
-#---------------------------------------------------------------------------------------------------------------------------------------#
+#---------------------------------------------------------------------------------#
 
 
 
-#--------------------------------# SDDM #---------------------------------#
-# - Instala el tema SilentSDDM como pantalla de inicio de sesion - #
+#-----------# Eliminar DM anterior e instalar SDDM #-----------#
+# - Borra cualquier display manager instalado previamente y lo reemplaza por SDDM - #
 
-echo ">>> Instalando SDDM..."
-cd /tmp
-rm -rf SilentSDDM
-git clone -b main --depth=1 https://github.com/uiriansan/SilentSDDM
-cd SilentSDDM
-chmod +x install.sh
-sudo ./install.sh
+echo ">>> Comprobando display manager..."
+for dm in lightdm gdm lxdm xdm greetd ly; do
+  if pacman -Qs "^$dm$" &>/dev/null; then
+    echo "encontrado $dm, reemplazando por sddm..."
+    sudo pacman -Rns --noconfirm $dm 2>/dev/null || true
+  fi
+done
 
-#-------------------------------------------------------------------------#
+sudo pacman -S --needed sddm --noconfirm
+sudo systemctl enable sddm
+
+#--------------------------------------------------------------#
 
 
 
@@ -260,21 +250,24 @@ curl -LO https://github.com/Edgares100IQ/archlinux-scripts/raw/main/default_wall
 
 
 
-#--------------------------------------------# Eliminar entorno DE anterior #---------------------------------------------#
-# - Borra cualquier DE instalado previamente y limpia huerfanos - #
+#---------------------------# Eliminar WM anterior e instalar Hyprland #----------------------------#
+# - Borra cualquier gestor de ventanas previo y lo reemplaza por Hyprland - #
 
-echo ">>> Eliminando entornos de escritorio anteriores..."
-sudo pacman -Rns --noconfirm plasma plasma-desktop plasma-wayland-session kde-applications sddm 2>/dev/null || true
-sudo pacman -Rns --noconfirm gnome gnome-shell gnome-session 2>/dev/null || true
-sudo pacman -Rns --noconfirm xfce4 xfce4-goodies 2>/dev/null || true
-sudo pacman -Rns --noconfirm lxde lxqt 2>/dev/null || true
-sudo pacman -Rns --noconfirm $(pacman -Qdtq) 2>/dev/null || true
+echo ">>> Comprobando gestor de ventanas..."
+for wm in plasma-desktop gnome-shell xfwm4 openbox i3 sway bspwm dwm awesome qtile xmonad; do
+  if pacman -Qs "^$wm$" &>/dev/null; then
+    echo "encontrado $wm, reemplazando por hyprland..."
+    sudo pacman -Rns --noconfirm $wm 2>/dev/null || true
+  fi
+done
 
-#-------------------------------------------------------------------------------------------------------------------------#
+sudo pacman -S --needed hyprland --noconfirm
+
+#---------------------------------------------------------------------------------------------------#
 
 
 
-#-------------# Limpieza y Reinicio #--------------#
+#--------------# Limpieza y Reinicio #---------------#
 # - Elimina el permiso sudo temporal y reinicia el sistema - #
 
 sudo rm -f /etc/sudoers.d/99-pacman-nopasswd
@@ -287,4 +280,4 @@ for i in {10..1}; do
 done
 sudo reboot
 
-#--------------------------------------------------#
+#----------------------------------------------------#
