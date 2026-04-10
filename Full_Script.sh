@@ -38,85 +38,107 @@ fi
 
 
 
-#-----------------------------------------# Elegir navegador #-----------------------------------------#
-# - Menu interactivo para elegir el navegador que se instalara - #
+#------------------# Selección de opciones #------------------#
+# - Recoge todas las preferencias antes de empezar a instalar - #
 
-echo ">>> Seleccion de navegador..."
+clear
+echo "=== NAVEGADOR ==="
+echo "1) Firefox"
+echo "2) Chromium"
+echo "3) Brave"
+echo "4) Opera"
+echo "5) Tor Browser"
+echo "6) Zen Browser"
+echo "7) Ninguno"
 while true; do
-  echo "¿Qué navegador quieres instalar?"
-  echo "1) Firefox"
-  echo "2) Chromium"
-  echo "3) Brave"
-  echo "4) Opera"
-  echo "5) Tor Browser"
-  echo "6) Zen Browser"
-  echo "7) Ninguno"
   read -p "Elige una opción [1-7]: " navegador
   case $navegador in
-    1) sudo pacman -S --needed firefox --noconfirm; break ;;
-    2) sudo pacman -S --needed chromium --noconfirm; break ;;
-    3) yay -S --noconfirm --needed --answerclean All --answerdiff None brave-bin; break ;;
-    4) yay -S --noconfirm --needed --answerclean All --answerdiff None opera; break ;;
-    5) yay -S --noconfirm --needed --answerclean All --answerdiff None tor-browser; break ;;
-    6) yay -S --noconfirm --needed --answerclean All --answerdiff None zen-browser-bin; break ;;
-    7) echo "sin navegador, ok"; break ;;
+    [1-7]) break ;;
     *) echo "opción no válida, inténtalo de nuevo" ;;
   esac
 done
 
-#------------------------------------------------------------------------------------------------------#
-
-
-
-#--------------------------------------------------------------# Elegir editor de código #---------------------------------------------------------------#
-# - Menu interactivo para elegir el editor que se instalara - #
-
-echo ">>> Seleccion de editor de código..."
+clear
+echo "=== EDITOR DE CÓDIGO ==="
+echo "1) VSCodium"
+echo "2) Windsurf"
+echo "3) Antigravity"
+echo "4) Ninguno"
 while true; do
-  echo "¿Qué editor quieres instalar?"
-  echo "1) VSCodium"
-  echo "2) Windsurf"
-  echo "3) Antigravity"
-  echo "4) Ninguno"
   read -p "Elige una opción [1-4]: " editor
   case $editor in
-    1) env -u MAKEPKGFLAGS yay -S --noconfirm --needed --answerclean All --answerdiff None vscodium-bin --mflags "--nocheck --skipinteg"; break ;;
-    2) yay -S --noconfirm --needed --answerclean All --answerdiff None windsurf
-       windsurf --no-sandbox
-       break ;;
-    3) yay -S --noconfirm --needed --answerclean All --answerdiff None antigravity; break ;;
-    4) echo "sin editor, ok"; break ;;
+    [1-4]) break ;;
     *) echo "opción no válida, inténtalo de nuevo" ;;
   esac
 done
 
-#--------------------------------------------------------------------------------------------------------------------------------------------------------#
-
-
-
-#------------------------------------# Elegir launcher de juegos #-------------------------------------#
-# - Menu interactivo para elegir el launcher que se instalara - #
-
-echo ">>> Seleccion de launcher de juegos..."
+clear
+echo "=== LAUNCHER DE JUEGOS ==="
+echo "1) Steam"
+echo "2) Heroic Games Launcher"
+echo "3) Ambos"
+echo "4) Ninguno"
 while true; do
-  echo "¿Qué launcher quieres instalar?"
-  echo "1) Steam"
-  echo "2) Heroic Games Launcher"
-  echo "3) Ambos"
-  echo "4) Ninguno"
   read -p "Elige una opción [1-4]: " launcher
   case $launcher in
-    1) flatpak install flathub com.valvesoftware.Steam -y; break ;;
-    2) yay -S --noconfirm --needed --answerclean All --answerdiff None heroic-games-launcher-bin; break ;;
-    3) flatpak install flathub com.valvesoftware.Steam -y
-       yay -S --noconfirm --needed --answerclean All --answerdiff None heroic-games-launcher-bin
-       break ;;
-    4) echo "sin launcher, ok"; break ;;
+    [1-4]) break ;;
     *) echo "opción no válida, inténtalo de nuevo" ;;
   esac
 done
 
-#------------------------------------------------------------------------------------------------------#
+clear
+
+#-------------------------------------------------------------#
+
+
+
+#-----------------------------------------# Navegador #-----------------------------------------#
+# - Instala el navegador seleccionado - #
+
+echo ">>> Instalando navegador..."
+case $navegador in
+  1) sudo pacman -S --needed firefox --noconfirm ;;
+  2) sudo pacman -S --needed chromium --noconfirm ;;
+  3) yay -S --noconfirm --needed --answerclean All --answerdiff None brave-bin ;;
+  4) yay -S --noconfirm --needed --answerclean All --answerdiff None opera ;;
+  5) yay -S --noconfirm --needed --answerclean All --answerdiff None tor-browser ;;
+  6) yay -S --noconfirm --needed --answerclean All --answerdiff None zen-browser-bin ;;
+  7) echo "sin navegador, ok" ;;
+esac
+
+#-----------------------------------------------------------------------------------------------#
+
+
+
+#--------------------------------------------------------------# Editor de Código #---------------------------------------------------------------#
+# - Instala el editor seleccionado - #
+
+echo ">>> Instalando editor..."
+case $editor in
+  1) env -u MAKEPKGFLAGS yay -S --noconfirm --needed --answerclean All --answerdiff None vscodium-bin --mflags "--nocheck --skipinteg" ;;
+  2) yay -S --noconfirm --needed --answerclean All --answerdiff None windsurf
+     windsurf --no-sandbox ;;
+  3) yay -S --noconfirm --needed --answerclean All --answerdiff None antigravity ;;
+  4) echo "sin editor, ok" ;;
+esac
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+
+#-----------------------------------------# Launcher de Juegos #-----------------------------------------#
+# - Instala el launcher seleccionado - #
+
+echo ">>> Instalando launcher..."
+case $launcher in
+  1) flatpak install flathub com.valvesoftware.Steam -y ;;
+  2) yay -S --noconfirm --needed --answerclean All --answerdiff None heroic-games-launcher-bin ;;
+  3) flatpak install flathub com.valvesoftware.Steam -y
+     yay -S --noconfirm --needed --answerclean All --answerdiff None heroic-games-launcher-bin ;;
+  4) echo "sin launcher, ok" ;;
+esac
+
+#---------------------------------------------------------------------------------------------------------#
 
 
 
