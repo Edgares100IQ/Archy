@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPT_DIR="$HOME/.local/share/archy"
+SCRIPT_DIR="$HOME/.local/share/archy/archy"
 
 run_script() {
     local script="$1"
@@ -214,7 +214,6 @@ menu_predeterminadas() {
         echo "4. ninguno"
         read -p "Elige una opcion: " op_launch
 
-        # resumen
         logo
         echo "======================================="
         echo "RESUMEN DE INSTALACION:"
@@ -240,7 +239,6 @@ menu_predeterminadas() {
         echo "======================================="
         read -p "pulsa enter para comenzar..."
 
-        # instalar
         run_script "$SCRIPT_DIR/scripts/end4_completo.sh"
 
         case "$op_nav" in
