@@ -262,9 +262,11 @@ menu_predeterminadas() {
         esac
 
         echo ""
-        echo "instalacion completada, reiniciando en:"
-        for i in {10..1}; do echo "  $i..."; sleep 1; done
-        sudo reboot
+        echo "instalacion completada"
+        read -p "reiniciar ahora? [s/N]: " confirm
+        if [[ "$confirm" =~ ^[sS]$ ]]; then
+            sudo reboot
+        fi
         break
     done
 }
