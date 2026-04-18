@@ -142,11 +142,13 @@ menu_entorno() {
         logo
         echo "===== Entorno de escritorio ====="
         echo "1. end-4 dotfiles"
-        echo "2. volver"
+        echo "2. tema sddm (silentsddm)"
+        echo "3. volver"
         read -p "Elige una opcion: " op
         case "$op" in
             1) run_script "$SCRIPT_DIR/scripts/end4_completo.sh"; break ;;
-            2) break ;;
+            2) run_script "$SCRIPT_DIR/scripts/sddm.sh"; break ;;
+            3) break ;;
             *) echo "opcion no valida" ;;
         esac
     done
@@ -262,11 +264,9 @@ menu_predeterminadas() {
         esac
 
         echo ""
-        echo "instalacion completada"
-        read -p "reiniciar ahora? [s/N]: " confirm
-        if [[ "$confirm" =~ ^[sS]$ ]]; then
-            sudo reboot
-        fi
+        echo "instalacion completada, reiniciando en:"
+        for i in {10..1}; do echo "  $i..."; sleep 1; done
+        sudo reboot
         break
     done
 }
