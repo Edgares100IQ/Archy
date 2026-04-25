@@ -79,28 +79,39 @@ navigate_menu() {
     local selected=0
 
     cursor_hide
+    logo
+    if [ -n "$title" ]; then
+        echo "===== $title ====="
+        echo ""
+    fi
 
-    while true; do
-        logo
-        if [ -n "$title" ]; then
-            echo "===== $title ====="
-            echo ""
-        fi
+    # guardar posicion donde empiezan las opciones
+    local menu_line
+    menu_line=$(tput lines)
+
+    draw_options() {
+        # mover cursor a la posicion de las opciones
+        tput cup $(($(tput lines) - count - 2)) 0
         for i in "${!options[@]}"; do
+            tput el
             if [ "$i" -eq "$selected" ]; then
                 echo -e "\e[7m  ${options[$i]}  \e[0m"
             else
                 echo "  ${options[$i]}"
             fi
         done
+    }
 
+    draw_options
+
+    while true; do
         local key
         IFS= read -rsn1 key
         if [[ "$key" == $'\x1b' ]]; then
             read -rsn2 -t 0.1 key
             case "$key" in
-                '[A') ((selected--)); [ "$selected" -lt 0 ] && selected=$((count-1)) ;;
-                '[B') ((selected++)); [ "$selected" -ge "$count" ] && selected=0 ;;
+                '[A') ((selected--)); [ "$selected" -lt 0 ] && selected=$((count-1)); draw_options ;;
+                '[B') ((selected++)); [ "$selected" -ge "$count" ] && selected=0; draw_options ;;
             esac
         elif [[ "$key" == "" ]]; then
             MENU_RESULT=$selected
