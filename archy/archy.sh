@@ -85,25 +85,7 @@ navigate_menu() {
         echo ""
     fi
 
-    # guardar fila donde empiezan las opciones
-    local start_row
-    start_row=$(tput cup 0 0; tput lines)
-    start_row=$(echo -e "\033[6n" | cat; read -rs -d R pos; echo "${pos#*[}" | cut -d';' -f1)
-
-    # pintar opciones por primera vez
-    for i in "${!options[@]}"; do
-        if [ "$i" -eq "$selected" ]; then
-            echo -e "\e[7m  ${options[$i]}  \e[0m"
-        else
-            echo "  ${options[$i]}"
-        fi
-    done
-
-    # guardar fila actual despues de pintar
-    local end_row=$((start_row + count))
-
     draw_options() {
-        tput cup $((start_row - 1)) 0
         for i in "${!options[@]}"; do
             tput el
             if [ "$i" -eq "$selected" ]; then
@@ -114,14 +96,26 @@ navigate_menu() {
         done
     }
 
+    draw_options
+
     while true; do
         local key
         IFS= read -rsn1 key
         if [[ "$key" == $'\x1b' ]]; then
             read -rsn2 -t 0.1 key
             case "$key" in
-                '[A') ((selected--)); [ "$selected" -lt 0 ] && selected=$((count-1)); draw_options ;;
-                '[B') ((selected++)); [ "$selected" -ge "$count" ] && selected=0; draw_options ;;
+                '[A')
+                    ((selected--))
+                    [ "$selected" -lt 0 ] && selected=$((count-1))
+                    tput cuu $count
+                    draw_options
+                    ;;
+                '[B')
+                    ((selected++))
+                    [ "$selected" -ge "$count" ] && selected=0
+                    tput cuu $count
+                    draw_options
+                    ;;
             esac
         elif [[ "$key" == "" ]]; then
             MENU_RESULT=$selected
