@@ -188,6 +188,21 @@ menu_launcher() {
     esac
 }
 
+# ── juegos ─────────────────────────────────────────────────────
+menu_juegos() {
+    while true; do
+        local opts=(
+            "⛏️  minecraft (tlauncher o official)"
+            "↩  $MSG_BACK"
+        )
+        navigate_menu "$MSG_MENU_GAMES_TITLE" "${opts[@]}"
+        case "$MENU_RESULT" in
+            0) run_script "$SCRIPT_DIR/scripts/juegos/minecraft.sh" ;;
+            1) return ;;
+        esac
+    done
+}
+
 # ── programas ──────────────────────────────────────────────────
 menu_programas() {
     while true; do
@@ -195,6 +210,7 @@ menu_programas() {
             "🌐 $MSG_MENU_PROGRAMS_1"
             "💻 $MSG_MENU_PROGRAMS_2"
             "🎮 $MSG_MENU_PROGRAMS_3"
+            "🕹️  $MSG_MENU_PROGRAMS_4"
             "↩  $MSG_BACK"
         )
         navigate_menu "$MSG_MENU_PROGRAMS_TITLE" "${opts[@]}"
@@ -202,7 +218,8 @@ menu_programas() {
             0) menu_navegador ;;
             1) menu_editor ;;
             2) menu_launcher ;;
-            3) return ;;
+            3) menu_juegos ;;
+            4) return ;;
         esac
     done
 }
@@ -254,15 +271,12 @@ update_archy() {
     INSTALL_DIR="$HOME/.local/share/archy"
     LANG_BACKUP="$HOME/.local/share/archy/lang"
     TMP_DIR="/tmp/archy_update"
-    # guardar idioma
     local saved_lang=""
     [ -f "$LANG_BACKUP" ] && saved_lang=$(cat "$LANG_BACKUP")
-    # clonar en tmp y mover
     rm -rf "$TMP_DIR"
     git clone --depth 1 "$REPO_URL" "$TMP_DIR" &> /dev/null
     rm -rf "$INSTALL_DIR"
     mv "$TMP_DIR" "$INSTALL_DIR"
-    # restaurar idioma
     [ -n "$saved_lang" ] && echo "$saved_lang" > "$LANG_BACKUP"
     chmod +x "$INSTALL_DIR/archy/archy.sh"
     find "$INSTALL_DIR/archy/scripts" -name "*.sh" -exec chmod +x {} \;
@@ -305,8 +319,8 @@ menu_desinstalar_navegador() {
     )
     navigate_menu "$MSG_MENU_BROWSER_TITLE" "${opts[@]}"
     case "$MENU_RESULT" in
-        0) run_script <(echo "sudo pacman -Rns firefox --noconfirm") ;;
-        1) run_script <(echo "sudo pacman -Rns chromium --noconfirm") ;;
+        0) cursor_show; sudo pacman -Rns firefox --noconfirm; cursor_hide ;;
+        1) cursor_show; sudo pacman -Rns chromium --noconfirm; cursor_hide ;;
         2) cursor_show; yay -Rns brave-bin --noconfirm; cursor_hide ;;
         3) cursor_show; yay -Rns opera --noconfirm; cursor_hide ;;
         4) cursor_show; yay -Rns tor-browser-bin --noconfirm; cursor_hide ;;
