@@ -67,7 +67,7 @@ logo() {
     chafa "$SCRIPT_DIR/pato.png" --size 40x22 --colors 256
     echo
     echo " $MSG_HELLO"
-    echo ""
+    echo 
     echo "==================================================================="
     echo ""
 }
