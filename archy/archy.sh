@@ -6,8 +6,8 @@ I18N_DIR="$SCRIPT_DIR/scripts/idioma"
 MENU_RESULT=0
 
 # ocultar/mostrar cursor
-cursor_hide() { tput civis; }
-cursor_show() { tput cnorm; }
+cursor_hide() { printf "\e[?25l"; }
+cursor_show() { printf "\e[?25h"; }
 
 # asegurarse de mostrar cursor al salir
 trap cursor_show EXIT
