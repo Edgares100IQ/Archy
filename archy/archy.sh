@@ -61,26 +61,21 @@ run_script() {
     cursor_hide
 }
 
-_get_bg_color() {
+_sixel_supported() {
     local response
-    printf '\e]11;?\a' > /dev/tty
+    printf '\e[c' > /dev/tty
     response=$(dd if=/dev/tty bs=64 count=1 2>/dev/null | tr -d '\0')
-    if [[ "$response" =~ rgb:([0-9a-fA-F]+)/([0-9a-fA-F]+)/([0-9a-fA-F]+) ]]; then
-        local r=${BASH_REMATCH[1]:0:2}
-        local g=${BASH_REMATCH[2]:0:2}
-        local b=${BASH_REMATCH[3]:0:2}
-        echo "#${r}${g}${b}"
-    else
-        echo "#000000"
-    fi
+    [[ "$response" == *";4;"* || "$response" == *";4c"* ]]
 }
 
 logo() {
     clear
     echo "==================================================================="
-    local bg
-    bg=$(_get_bg_color)
-    chafa "$SCRIPT_DIR/pato.png" --size 40x20 --colors 256 --bg "$bg"
+    if _sixel_supported; then
+        convert "$SCRIPT_DIR/pato.png" -geometry 200x200 sixel:-
+    else
+        chafa "$SCRIPT_DIR/pato.png" --size 40x20 --colors 256
+    fi
     echo " $MSG_HELLO"
     echo "==================================================================="
     echo ""
