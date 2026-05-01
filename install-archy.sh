@@ -7,6 +7,8 @@ set -e
 REPO_URL="https://github.com/Edgares100IQ/archlinux-scripts.git"
 INSTALL_DIR="$HOME/.local/share/archy"
 WRAPPER="/usr/local/bin/archy"
+# si se llama desde update_archy, el repo ya está clonado en /tmp/archy_update
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo ">>> Comprobando dependencias..."
 
@@ -26,14 +28,21 @@ if ! command -v chafa &>/dev/null; then
 fi
 
 # instalar imagemagick si no está
-if ! command -v convert &>/dev/null; then
+if ! command -v magick &>/dev/null; then
     echo "    instalando imagemagick..."
     sudo pacman -S --needed --noconfirm imagemagick
 fi
 
-echo ">>> Clonando repositorio..."
-rm -rf "$INSTALL_DIR"
-git clone --depth 1 "$REPO_URL" "$INSTALL_DIR"
+# si el script se ejecuta desde el propio repo clonado, usarlo directamente
+if [ -f "$SCRIPT_PATH/archy/archy.sh" ]; then
+    echo ">>> Instalando desde directorio local..."
+    rm -rf "$INSTALL_DIR"
+    cp -r "$SCRIPT_PATH" "$INSTALL_DIR"
+else
+    echo ">>> Clonando repositorio..."
+    rm -rf "$INSTALL_DIR"
+    git clone --depth 1 "$REPO_URL" "$INSTALL_DIR"
+fi
 
 echo ">>> Dando permisos..."
 chmod +x "$INSTALL_DIR/archy/archy.sh"
