@@ -94,7 +94,9 @@ logo() {
         fi
         printf '%b' "$_PATO_CACHE"
     fi
+    echo
     echo " $MSG_HELLO"
+    echo
     echo "==================================================================="
     echo ""
 }
