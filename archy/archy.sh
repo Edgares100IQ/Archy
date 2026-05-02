@@ -94,7 +94,9 @@ logo() {
         fi
         printf '%b' "$_PATO_CACHE"
     fi
+    echo
     echo " $MSG_HELLO"
+    echo
     echo "==================================================================="
     echo ""
 }
@@ -730,10 +732,13 @@ while true; do
         2) menu_desinstalar ;;
         3) menu_sistema ;;
         4) menu_ajustes ;;
-        5) clear
-           echo
-           echo "¡Espero que te haya servido de ayuda!"
-           echo
-           exit 0 ;;
+        5) navigate_menu "$MSG_CONFIRM_EXIT" "$MSG_YES" "$MSG_NO"
+           if [ "$MENU_RESULT" -eq 0 ]; then
+               clear
+               echo
+               echo "¡Espero que te haya servido de ayuda!"
+               echo
+               exit 0
+           fi ;;
     esac
 done
