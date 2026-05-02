@@ -61,6 +61,12 @@ run_script() {
     cursor_hide
 }
 
+confirm_uninstall() {
+    local name="$1"
+    navigate_menu "$MSG_CONFIRM_UNINSTALL $name?" "$MSG_YES_UNINSTALL" "$MSG_NO_CANCEL"
+    [ "$MENU_RESULT" -eq 0 ]
+}
+
 _SIXEL_SUPPORT=""
 _PATO_CACHE=""
 
@@ -500,12 +506,12 @@ menu_desinstalar_navegador() {
         )
         navigate_menu "$MSG_MENU_BROWSER_TITLE" "${opts[@]}"
         case "$MENU_RESULT" in
-            0) cursor_show; sudo pacman -Rns firefox --noconfirm; cursor_hide ;;
-            1) cursor_show; sudo pacman -Rns chromium --noconfirm; cursor_hide ;;
-            2) cursor_show; yay -Rns brave-bin --noconfirm; cursor_hide ;;
-            3) cursor_show; yay -Rns opera --noconfirm; cursor_hide ;;
-            4) cursor_show; yay -Rns tor-browser-bin --noconfirm; cursor_hide ;;
-            5) cursor_show; yay -Rns zen-browser-bin --noconfirm; cursor_hide ;;
+            0) confirm_uninstall "firefox"     && { cursor_show; sudo pacman -Rns firefox --noconfirm; cursor_hide; } ;;
+            1) confirm_uninstall "chromium"    && { cursor_show; sudo pacman -Rns chromium --noconfirm; cursor_hide; } ;;
+            2) confirm_uninstall "brave"        && { cursor_show; yay -Rns brave-bin --noconfirm; cursor_hide; } ;;
+            3) confirm_uninstall "opera"        && { cursor_show; yay -Rns opera --noconfirm; cursor_hide; } ;;
+            4) confirm_uninstall "tor browser"  && { cursor_show; yay -Rns tor-browser-bin --noconfirm; cursor_hide; } ;;
+            5) confirm_uninstall "zen browser"  && { cursor_show; yay -Rns zen-browser-bin --noconfirm; cursor_hide; } ;;
             6) return ;;
         esac
     done
@@ -523,10 +529,10 @@ menu_desinstalar_editor() {
         )
         navigate_menu "$MSG_MENU_EDITOR_TITLE" "${opts[@]}"
         case "$MENU_RESULT" in
-            0) cursor_show; yay -Rns vscodium-bin --noconfirm; cursor_hide ;;
-            1) cursor_show; yay -Rns windsurf --noconfirm; cursor_hide ;;
-            2) cursor_show; yay -Rns antigravity --noconfirm; cursor_hide ;;
-            3) cursor_show; sudo pacman -Rns neovim --noconfirm; cursor_hide ;;
+            0) confirm_uninstall "vscodium"    && { cursor_show; yay -Rns vscodium-bin --noconfirm; cursor_hide; } ;;
+            1) confirm_uninstall "windsurf"    && { cursor_show; yay -Rns windsurf --noconfirm; cursor_hide; } ;;
+            2) confirm_uninstall "antigravity" && { cursor_show; yay -Rns antigravity --noconfirm; cursor_hide; } ;;
+            3) confirm_uninstall "lazyvim"     && { cursor_show; sudo pacman -Rns neovim --noconfirm; cursor_hide; } ;;
             4) return ;;
         esac
     done
@@ -542,8 +548,8 @@ menu_desinstalar_launcher() {
         )
         navigate_menu "$MSG_MENU_LAUNCHER_TITLE" "${opts[@]}"
         case "$MENU_RESULT" in
-            0) cursor_show; flatpak uninstall com.valvesoftware.Steam -y; cursor_hide ;;
-            1) cursor_show; yay -Rns heroic-games-launcher-bin --noconfirm; cursor_hide ;;
+            0) confirm_uninstall "steam"  && { cursor_show; flatpak uninstall com.valvesoftware.Steam -y; cursor_hide; } ;;
+            1) confirm_uninstall "heroic" && { cursor_show; yay -Rns heroic-games-launcher-bin --noconfirm; cursor_hide; } ;;
             2) return ;;
         esac
     done
@@ -561,10 +567,10 @@ menu_desinstalar_juegos() {
         )
         navigate_menu "$MSG_MENU_GAMES_TITLE" "${opts[@]}"
         case "$MENU_RESULT" in
-            0) run_script "$SCRIPT_DIR/scripts/juegos/desinstalar_minecraft.sh" ;;
-            1) cursor_show; sudo pacman -Rns prismlauncher --noconfirm; cursor_hide ;;
-            2) cursor_show; yay -Rns curseforge --noconfirm; cursor_hide ;;
-            3) cursor_show; yay -Rns modrinth-app --noconfirm; cursor_hide ;;
+            0) confirm_uninstall "minecraft"     && run_script "$SCRIPT_DIR/scripts/juegos/desinstalar_minecraft.sh" ;;
+            1) confirm_uninstall "prism launcher" && { cursor_show; sudo pacman -Rns prismlauncher --noconfirm; cursor_hide; } ;;
+            2) confirm_uninstall "curseforge"    && { cursor_show; yay -Rns curseforge --noconfirm; cursor_hide; } ;;
+            3) confirm_uninstall "modrinth app"  && { cursor_show; yay -Rns modrinth-app --noconfirm; cursor_hide; } ;;
             4) return ;;
         esac
     done
@@ -583,12 +589,12 @@ menu_desinstalar_utilidades() {
     )
     navigate_menu "$MSG_MENU_UTILS_TITLE" "${opts[@]}"
     case "$MENU_RESULT" in
-        0) cursor_show; yay -Rns anydesk-bin --noconfirm; cursor_hide ;;
-        1) cursor_show; yay -Rns timeshift --noconfirm; cursor_hide ;;
-        2) cursor_show; sudo pacman -Rns cups cups-pdf system-config-printer --noconfirm; cursor_hide ;;
-        3) cursor_show; sudo pacman -Rns keepassxc --noconfirm; cursor_hide ;;
-        4) cursor_show; sudo pacman -Rns thunar thunar-archive-plugin thunar-volman --noconfirm; cursor_hide ;;
-        5) cursor_show; sudo pacman -Rns libreoffice-fresh libreoffice-fresh-es --noconfirm; cursor_hide ;;
+        0) confirm_uninstall "anydesk"     && { cursor_show; yay -Rns anydesk-bin --noconfirm; cursor_hide; } ;;
+        1) confirm_uninstall "timeshift"   && { cursor_show; yay -Rns timeshift --noconfirm; cursor_hide; } ;;
+        2) confirm_uninstall "cups"        && { cursor_show; sudo pacman -Rns cups cups-pdf system-config-printer --noconfirm; cursor_hide; } ;;
+        3) confirm_uninstall "keepassxc"   && { cursor_show; sudo pacman -Rns keepassxc --noconfirm; cursor_hide; } ;;
+        4) confirm_uninstall "thunar"      && { cursor_show; sudo pacman -Rns thunar thunar-archive-plugin thunar-volman --noconfirm; cursor_hide; } ;;
+        5) confirm_uninstall "libreoffice" && { cursor_show; sudo pacman -Rns libreoffice-fresh libreoffice-fresh-es --noconfirm; cursor_hide; } ;;
         6) return ;;
     esac
 }
@@ -606,12 +612,12 @@ menu_desinstalar_comunicacion() {
     )
     navigate_menu "$MSG_MENU_COMM_TITLE" "${opts[@]}"
     case "$MENU_RESULT" in
-        0) cursor_show; yay -Rns discord --noconfirm; cursor_hide ;;
-        1) cursor_show; sudo pacman -Rns telegram-desktop --noconfirm; cursor_hide ;;
-        2) cursor_show; yay -Rns whatsie --noconfirm; cursor_hide ;;
-        3) cursor_show; yay -Rns spotify --noconfirm; cursor_hide ;;
-        4) cursor_show; yay -Rns zoom --noconfirm; cursor_hide ;;
-        5) cursor_show; yay -Rns element-desktop --noconfirm; cursor_hide ;;
+        0) confirm_uninstall "discord"  && { cursor_show; yay -Rns discord --noconfirm; cursor_hide; } ;;
+        1) confirm_uninstall "telegram" && { cursor_show; sudo pacman -Rns telegram-desktop --noconfirm; cursor_hide; } ;;
+        2) confirm_uninstall "whatsapp" && { cursor_show; yay -Rns whatsie --noconfirm; cursor_hide; } ;;
+        3) confirm_uninstall "spotify"  && { cursor_show; yay -Rns spotify --noconfirm; cursor_hide; } ;;
+        4) confirm_uninstall "zoom"     && { cursor_show; yay -Rns zoom --noconfirm; cursor_hide; } ;;
+        5) confirm_uninstall "element"  && { cursor_show; yay -Rns element-desktop --noconfirm; cursor_hide; } ;;
         6) return ;;
     esac
 }
