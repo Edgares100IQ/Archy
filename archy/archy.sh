@@ -294,55 +294,63 @@ menu_juegos() {
 
 # ── programas ──────────────────────────────────────────────────
 menu_herramientas() {
-    local opts=(
-        "🖥️  anydesk"
-        "💾 timeshift"
-        "🖨️  cups"
-        "↩  $MSG_BACK"
-    )
-    navigate_menu "$MSG_MENU_TOOLS_TITLE" "${opts[@]}"
-    case "$MENU_RESULT" in
-        0) run_script "$SCRIPT_DIR/scripts/utilidades/herramientas/anydesk.sh" ;;
-        1) run_script "$SCRIPT_DIR/scripts/utilidades/herramientas/timeshift.sh" ;;
-        2) run_script "$SCRIPT_DIR/scripts/utilidades/herramientas/cups.sh" ;;
-        3) return ;;
-    esac
+    while true; do
+        local opts=(
+            "🖥️  anydesk"
+            "💾 timeshift"
+            "🖨️  cups"
+            "↩  $MSG_BACK"
+        )
+        navigate_menu "$MSG_MENU_TOOLS_TITLE" "${opts[@]}"
+        case "$MENU_RESULT" in
+            0) run_script "$SCRIPT_DIR/scripts/utilidades/herramientas/anydesk.sh" ;;
+            1) run_script "$SCRIPT_DIR/scripts/utilidades/herramientas/timeshift.sh" ;;
+            2) run_script "$SCRIPT_DIR/scripts/utilidades/herramientas/cups.sh" ;;
+            3) return ;;
+        esac
+    done
 }
 
 menu_seguridad() {
-    local opts=(
-        "🔒 keepassxc"
-        "↩  $MSG_BACK"
-    )
-    navigate_menu "$MSG_MENU_SECURITY_TITLE" "${opts[@]}"
-    case "$MENU_RESULT" in
-        0) run_script "$SCRIPT_DIR/scripts/utilidades/seguridad/keepassxc.sh" ;;
-        1) return ;;
-    esac
+    while true; do
+        local opts=(
+            "🔒 keepassxc"
+            "↩  $MSG_BACK"
+        )
+        navigate_menu "$MSG_MENU_SECURITY_TITLE" "${opts[@]}"
+        case "$MENU_RESULT" in
+            0) run_script "$SCRIPT_DIR/scripts/utilidades/seguridad/keepassxc.sh" ;;
+            1) return ;;
+        esac
+    done
 }
 
 menu_archivos() {
-    local opts=(
-        "📁 thunar"
-        "↩  $MSG_BACK"
-    )
-    navigate_menu "$MSG_MENU_FILES_TITLE" "${opts[@]}"
-    case "$MENU_RESULT" in
-        0) run_script "$SCRIPT_DIR/scripts/utilidades/archivos/thunar.sh" ;;
-        1) return ;;
-    esac
+    while true; do
+        local opts=(
+            "📁 thunar"
+            "↩  $MSG_BACK"
+        )
+        navigate_menu "$MSG_MENU_FILES_TITLE" "${opts[@]}"
+        case "$MENU_RESULT" in
+            0) run_script "$SCRIPT_DIR/scripts/utilidades/archivos/thunar.sh" ;;
+            1) return ;;
+        esac
+    done
 }
 
 menu_ofimatica() {
-    local opts=(
-        "📄 libreoffice"
-        "↩  $MSG_BACK"
-    )
-    navigate_menu "$MSG_MENU_OFFICE_TITLE" "${opts[@]}"
-    case "$MENU_RESULT" in
-        0) run_script "$SCRIPT_DIR/scripts/utilidades/ofimatica/libreoffice.sh" ;;
-        1) return ;;
-    esac
+    while true; do
+        local opts=(
+            "📄 libreoffice"
+            "↩  $MSG_BACK"
+        )
+        navigate_menu "$MSG_MENU_OFFICE_TITLE" "${opts[@]}"
+        case "$MENU_RESULT" in
+            0) run_script "$SCRIPT_DIR/scripts/utilidades/ofimatica/libreoffice.sh" ;;
+            1) return ;;
+        esac
+    done
 }
 
 menu_utilidades() {
@@ -366,25 +374,27 @@ menu_utilidades() {
 }
 
 menu_comunicacion() {
-    local opts=(
-        "💬 discord"
-        "✈️  telegram"
-        "💚 whatsapp"
-        "🎵 spotify"
-        "📹 zoom"
-        "🟦 element"
-        "↩  $MSG_BACK"
-    )
-    navigate_menu "$MSG_MENU_COMM_TITLE" "${opts[@]}"
-    case "$MENU_RESULT" in
-        0) run_script "$SCRIPT_DIR/scripts/comunicacion/discord.sh" ;;
-        1) run_script "$SCRIPT_DIR/scripts/comunicacion/telegram.sh" ;;
-        2) run_script "$SCRIPT_DIR/scripts/comunicacion/whatsapp.sh" ;;
-        3) run_script "$SCRIPT_DIR/scripts/comunicacion/spotify.sh" ;;
-        4) run_script "$SCRIPT_DIR/scripts/comunicacion/zoom.sh" ;;
-        5) run_script "$SCRIPT_DIR/scripts/comunicacion/element.sh" ;;
-        6) return ;;
-    esac
+    while true; do
+        local opts=(
+            "💬 discord"
+            "✈️  telegram"
+            "💚 whatsapp"
+            "🎵 spotify"
+            "📹 zoom"
+            "🟦 element"
+            "↩  $MSG_BACK"
+        )
+        navigate_menu "$MSG_MENU_COMM_TITLE" "${opts[@]}"
+        case "$MENU_RESULT" in
+            0) run_script "$SCRIPT_DIR/scripts/comunicacion/discord.sh" ;;
+            1) run_script "$SCRIPT_DIR/scripts/comunicacion/telegram.sh" ;;
+            2) run_script "$SCRIPT_DIR/scripts/comunicacion/whatsapp.sh" ;;
+            3) run_script "$SCRIPT_DIR/scripts/comunicacion/spotify.sh" ;;
+            4) run_script "$SCRIPT_DIR/scripts/comunicacion/zoom.sh" ;;
+            5) run_script "$SCRIPT_DIR/scripts/comunicacion/element.sh" ;;
+            6) return ;;
+        esac
+    done
 }
 
 menu_programas() {
@@ -578,48 +588,52 @@ menu_desinstalar_juegos() {
 
 # ── desinstalar utilidades ────────────────────────────────────
 menu_desinstalar_utilidades() {
-    local opts=(
-        "🖥️  anydesk"
-        "💾 timeshift"
-        "🖨️  cups"
-        "🔒 keepassxc"
-        "📁 thunar"
-        "📄 libreoffice"
-        "↩  $MSG_BACK"
-    )
-    navigate_menu "$MSG_MENU_UTILS_TITLE" "${opts[@]}"
-    case "$MENU_RESULT" in
-        0) confirm_uninstall "anydesk"     && { cursor_show; yay -Rns anydesk-bin --noconfirm; cursor_hide; } ;;
-        1) confirm_uninstall "timeshift"   && { cursor_show; yay -Rns timeshift --noconfirm; cursor_hide; } ;;
-        2) confirm_uninstall "cups"        && { cursor_show; sudo pacman -Rns cups cups-pdf system-config-printer --noconfirm; cursor_hide; } ;;
-        3) confirm_uninstall "keepassxc"   && { cursor_show; sudo pacman -Rns keepassxc --noconfirm; cursor_hide; } ;;
-        4) confirm_uninstall "thunar"      && { cursor_show; sudo pacman -Rns thunar thunar-archive-plugin thunar-volman --noconfirm; cursor_hide; } ;;
-        5) confirm_uninstall "libreoffice" && { cursor_show; sudo pacman -Rns libreoffice-fresh libreoffice-fresh-es --noconfirm; cursor_hide; } ;;
-        6) return ;;
-    esac
+    while true; do
+        local opts=(
+            "🖥️  anydesk"
+            "💾 timeshift"
+            "🖨️  cups"
+            "🔒 keepassxc"
+            "📁 thunar"
+            "📄 libreoffice"
+            "↩  $MSG_BACK"
+        )
+        navigate_menu "$MSG_MENU_UTILS_TITLE" "${opts[@]}"
+        case "$MENU_RESULT" in
+            0) confirm_uninstall "anydesk"     && { cursor_show; yay -Rns anydesk-bin --noconfirm; cursor_hide; } ;;
+            1) confirm_uninstall "timeshift"   && { cursor_show; yay -Rns timeshift --noconfirm; cursor_hide; } ;;
+            2) confirm_uninstall "cups"        && { cursor_show; sudo pacman -Rns cups cups-pdf system-config-printer --noconfirm; cursor_hide; } ;;
+            3) confirm_uninstall "keepassxc"   && { cursor_show; sudo pacman -Rns keepassxc --noconfirm; cursor_hide; } ;;
+            4) confirm_uninstall "thunar"      && { cursor_show; sudo pacman -Rns thunar thunar-archive-plugin thunar-volman --noconfirm; cursor_hide; } ;;
+            5) confirm_uninstall "libreoffice" && { cursor_show; sudo pacman -Rns libreoffice-fresh libreoffice-fresh-es --noconfirm; cursor_hide; } ;;
+            6) return ;;
+        esac
+    done
 }
 
 # ── desinstalar comunicacion ───────────────────────────────────
 menu_desinstalar_comunicacion() {
-    local opts=(
-        "💬 discord"
-        "✈️  telegram"
-        "💚 whatsapp"
-        "🎵 spotify"
-        "📹 zoom"
-        "🟦 element"
-        "↩  $MSG_BACK"
-    )
-    navigate_menu "$MSG_MENU_COMM_TITLE" "${opts[@]}"
-    case "$MENU_RESULT" in
-        0) confirm_uninstall "discord"  && { cursor_show; yay -Rns discord --noconfirm; cursor_hide; } ;;
-        1) confirm_uninstall "telegram" && { cursor_show; sudo pacman -Rns telegram-desktop --noconfirm; cursor_hide; } ;;
-        2) confirm_uninstall "whatsapp" && { cursor_show; yay -Rns whatsie --noconfirm; cursor_hide; } ;;
-        3) confirm_uninstall "spotify"  && { cursor_show; yay -Rns spotify --noconfirm; cursor_hide; } ;;
-        4) confirm_uninstall "zoom"     && { cursor_show; yay -Rns zoom --noconfirm; cursor_hide; } ;;
-        5) confirm_uninstall "element"  && { cursor_show; yay -Rns element-desktop --noconfirm; cursor_hide; } ;;
-        6) return ;;
-    esac
+    while true; do
+        local opts=(
+            "💬 discord"
+            "✈️  telegram"
+            "💚 whatsapp"
+            "🎵 spotify"
+            "📹 zoom"
+            "🟦 element"
+            "↩  $MSG_BACK"
+        )
+        navigate_menu "$MSG_MENU_COMM_TITLE" "${opts[@]}"
+        case "$MENU_RESULT" in
+            0) confirm_uninstall "discord"  && { cursor_show; yay -Rns discord --noconfirm; cursor_hide; } ;;
+            1) confirm_uninstall "telegram" && { cursor_show; sudo pacman -Rns telegram-desktop --noconfirm; cursor_hide; } ;;
+            2) confirm_uninstall "whatsapp" && { cursor_show; yay -Rns whatsie --noconfirm; cursor_hide; } ;;
+            3) confirm_uninstall "spotify"  && { cursor_show; yay -Rns spotify --noconfirm; cursor_hide; } ;;
+            4) confirm_uninstall "zoom"     && { cursor_show; yay -Rns zoom --noconfirm; cursor_hide; } ;;
+            5) confirm_uninstall "element"  && { cursor_show; yay -Rns element-desktop --noconfirm; cursor_hide; } ;;
+            6) return ;;
+        esac
+    done
 }
 
 # ── desinstalar programas ──────────────────────────────────────
